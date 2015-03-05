@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'turnip'
   s.add_development_dependency 'guard-rspec'
     
-  s.files         = Dir['{lib,spec,ext,test,features,bin}/**/**']
+  s.files         = Dir['{lib,spec,ext,test,features,bin}/**/**'] + ['LICENSE.txt']
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 end
