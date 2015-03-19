@@ -51,7 +51,7 @@ module Keyboard
     # @param  dw_state_names
     # @return [TrueClass || FalseClass]
     def nav_control_key?(virtual_key, *dw_state_names)
-      (control_key?(virtual_key) or virtual_key == Keyboard::VK[:CLEAR]) and dw_state_names.include?(:ENHANCED_KEY)
+      (control_pad_key?(virtual_key) or virtual_key == Keyboard::VK[:CLEAR]) and dw_state_names.include?(:ENHANCED_KEY)
     end
   end
   

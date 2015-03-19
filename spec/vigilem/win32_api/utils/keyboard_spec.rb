@@ -44,13 +44,13 @@ describe (KB = Vigilem::Win32API::Utils::Keyboard) do
       end
     end
     
-    describe '::nav_control_pad_key?' do
+    describe '::nav_control_key?' do
       it 'returns true if the key is one that is above the nav arrow pad' do
-        expect(KB.nav_control_pad_key?(KB::VK[:NEXT], :ENHANCED_KEY, :SOME_OTHER_KEY)).to be_truthy
+        expect(KB.nav_control_key?(KB::VK[:NEXT], :ENHANCED_KEY, :SOME_OTHER_KEY)).to be_truthy
       end
       
       it 'returns false if the key is one that is not above the nav arrow pad' do
-        expect(KB.nav_control_pad_key?(1, :ENHANCED_KEY)).to be_falsey
+        expect(KB.nav_control_key?(1, :ENHANCED_KEY)).to be_falsey
       end
     end
     
