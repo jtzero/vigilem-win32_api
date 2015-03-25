@@ -96,7 +96,7 @@ module Win32API
     # @param  [Array] msgs
     # @return 
     def demux(*msgs)
-      hub.demux(self, *msgs)
+      hub.demux(self.buffer, *msgs)
     end
    private
     

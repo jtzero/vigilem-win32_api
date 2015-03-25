@@ -1,4 +1,10 @@
-require 'timeout'
+require 'spec_helper'
+
+require 'vigilem/win32_api/eventable'
+
+require 'vigilem/win32_api/input_system_handler'
+
+require 'vigilem/core/adapters/adapter'
 
 describe Vigilem::Win32API::Eventable do
   
@@ -92,5 +98,37 @@ describe Vigilem::Win32API::Eventable do
         end
       end.to raise_error(Timeout::Error)
     end
+    
+    context 'event_loop' do
+      
+      let(:eventable_adapter) do
+        input_sys = double('InputSystem', :GetStdHandle => 3)
+        @incr = 0
+        allow(input_sys).to receive(:PeekConsoleInputW) do |hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead|
+          if @incr == 0
+            lpBuffer.replace(Vigilem::Win32API::PINPUT_RECORD.new(3, 
+              Vigilem::Win32API::INPUT_RECORD[Vigilem::Win32API::KEY_EVENT, {:KeyEvent => [1, 1, 70, 33, {:UnicodeChar => 97}, 32]}]
+            ))
+            @incr += 1
+          end
+          1
+        end
+        allow(input_sys).to receive(:ReadConsoleInputW) do |hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead|
+          lpBuffer.replace(Vigilem::Win32API::PINPUT_RECORD.new(3, 
+            Vigilem::Win32API::INPUT_RECORD[Vigilem::Win32API::KEY_EVENT, {:KeyEvent => [1, 1, 70, 33, {:UnicodeChar => 97}, 32]}]
+          ))
+          1
+        end
+        EventableAdapter.new(Vigilem::Win32API::InputSystemHandler.new(input_sys))
+      end
+      
+      it 'will return one event per event in the win32 event queue' do # to check that there is parity between the input_system and here
+        expect([eventable_adapter.read_one_nonblock, eventable_adapter.read_one_nonblock]).to match [
+          instance_of(Vigilem::Win32API::INPUT_RECORD), nil
+        ]
+      end
+    end
+    
   end
+  
 end
