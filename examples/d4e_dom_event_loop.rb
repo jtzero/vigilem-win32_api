@@ -7,11 +7,12 @@ Signal.trap("INT") { exit 1 }
 adapter = Vigilem::Win32API::DOM::Adapter.new
 
 def checkmark
-  "\u2713"
+  "\u221A"
 end
 
+# ther is no ballot x on Code page 437
 def ballot_x
-  "\u2717"
+  'x'
 end
 
 def empty_str_if_false(keyval, pad)
