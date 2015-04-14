@@ -18,25 +18,32 @@ module Win32API::DOM
       :VK_OEM_PERIOD => 'Period', 
       :VK_OEM_7      => 'Quote', 
       :VK_OEM_1      => 'Semicolon', 
-      :VK_OEM_2      => 'Slash'})
+      :VK_OEM_2      => 'Slash'
+    })
                       
     FunctionalKeys = Support::KeyMap.new({
-      :VK_MENU       => %w(AltLeft AltRight),
-      :VK_LMEMU      => 'AltLeft',
-      :VK_RMEMU      => 'AltRight',
-      :VK_CAPITAL    => 'CapsLock', 
-      :VK_APPS       => 'ContextMenu', 
-      :VK_CONTROL    => %w(ControlLeft ControlRight'),
-      :VK_LCONTROL   => 'ControlLeft', 
-      :VK_RCONTROL   => 'ControlRight',
-      :VK_RETURN     => 'Enter', 
-      :VK_LWIN       => 'OSLeft', 
-      :VK_RWIN       => 'OSRight', 
-      :VK_SHIFT      => %w(ShiftLeft ShiftRight),
-      :VK_LSHIFT     => 'ShiftLeft',
-      :VK_RSHIFT     => 'ShiftRight',
-      :VK_KANA       => 'KanaMode',
-      :VK_NONCONVERT => 'NonConvert' })
+      :VK_MENU                     => %w(AltLeft AltRight),
+      [:ENHANCED_KEY, :VK_MENU]    => 'AltRight',
+      :VK_LMEMU                    => 'AltLeft',
+      :VK_RMEMU                    => 'AltRight',
+      :VK_CAPITAL                  => 'CapsLock', 
+      :VK_APPS                     => 'ContextMenu', 
+      [:ENHANCED_KEY, :VK_APPS]    => 'ContextMenu', 
+      :VK_CONTROL                  => %w(ControlLeft ControlRight),
+      [:ENHANCED_KEY, :VK_CONTROL] => 'ControlRight',
+      :VK_LCONTROL                 => 'ControlLeft', 
+      :VK_RCONTROL                 => 'ControlRight',
+      :VK_RETURN                   => 'Enter', 
+      [:ENHANCED_KEY, :VK_LWIN]    => 'OSLeft', 
+      [:ENHANCED_KEY, :VK_RWIN]    => 'OSRight', 
+      :VK_SHIFT                    => %w(ShiftLeft ShiftRight),
+      :VK_LSHIFT                   => 'ShiftLeft',
+      :VK_RSHIFT                   => 'ShiftRight',
+      :VK_SPACE                    => 'Space',
+      :VK_TAB                      => 'Tab',
+      :VK_KANA                     => 'KanaMode',
+      :VK_NONCONVERT               => 'NonConvert' 
+    })
       #'Lang1', 'Lang2', 'Lang3', 'Lang4', 'Lang5' eh?
     
     ControlPadSection = Support::KeyMap.new({
@@ -85,34 +92,36 @@ module Win32API::DOM
       [:ENHANCED_KEY, :VK_DIVIDE]  => 'NumpadDivide',
       [:ENHANCED_KEY, :VK_RETURN]  => 'NumpadEnter',
       :VK_MULTIPLY                 => 'NumpadMultiply',
-      :VK_SUBTRACT                 => 'NumpadSubtract'})
+      :VK_SUBTRACT                 => 'NumpadSubtract'
+    })
     #'NumpadClear', 'NumpadClearEntry', 'NumpadComma', 'NumpadEqual', 'NumpadMemoryAdd', 'NumpadMemoryClear', 'NumpadMemoryRecall', 'NumpadMemoryStore', 'NumpadMemorySubtract', 'NumpadParenLeft', 'NumpadParenRight'
     
     FunctionSection = Support::KeyMap.new({
-      :VK_MENU                   => %w(AltLeft AltRight),
-      :VK_LMENU                  => 'AltLeft',
-      :VK_RMENU                  => 'AltRight',
-      [:ENHANCED_KEY, :VK_MENU]  => 'AltRight',
-      :VK_CAPITAL                => 'CapsLock',
-      [:ENHANCED_KEY, :VK_APPS]  => 'ContextMenu',
-      :VK_LWIN                   => 'ContextMenu',
-      :VK_RWIN                   => 'ContextMenu',
-      :VK_CONTROL                => ['ControlLeft', 'ControlRight'],
-      :VK_LCONTROL               => 'ControlLeft',
-      :VK_RCONTROL               => 'ControlRight',
-      :VK_SCROLL                 => 'ScrollLock', 
-      :VK_PAUSE                  => 'Pause',
-      :VK_SPACE                  => 'Space',
-      :VK_TAB                    => 'Tab'
+      :VK_ESCAPE   => 'Escape',
+      :VK_F1       => 'F1',
+      :VK_F2       => 'F2',
+      :VK_F3       => 'F3',
+      :VK_F4       => 'F4',
+      :VK_F5       => 'F5',
+      :VK_F6       => 'F6',
+      :VK_F7       => 'F7',
+      :VK_F8       => 'F8',
+      :VK_F9       => 'F9',
+      :VK_F10      => 'F10',
+      :VK_F11      => 'F11',
+      :VK_F12      => 'F12',
+                   #=> 'Fn',
+                   #=> 'FLock',
+      :VK_SNAPSHOT => 'PrintScreen',
+      :VK_SCROLL   => 'ScrollLock',
+      :VK_PAUSE    => 'Pause'
     })
-    
-    #['Fn', 'FLock', 'PrintScreen', ]
     
     MediaKeys = Support::KeyMap.new({ 
       :VK_MEDIA_NEXT_TRACK    => 'MediaTrackNext',
       :VK_MEDIA_PREV_TRACK    => 'MediaTrackPrevious',
-      :VK_LAUNCH_MEDIA_SELECT => 'MediaSelect'})
-      
+      :VK_LAUNCH_MEDIA_SELECT => 'MediaSelect'
+    })
       #'Eject', 'Power', 'WakeUp'
     
     LegacyKeysandNon_StandardKeys = Support::KeyMap.new({:VK_SELECT => 'Select'})

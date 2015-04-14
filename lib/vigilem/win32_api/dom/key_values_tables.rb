@@ -4,6 +4,7 @@ module Win32API::DOM
   # converts Windows VK if available or VK
   # https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.code
   # https://bugzilla.mozilla.org/show_bug.cgi?id=865649
+  # http://www.w3.org/TR/2014/WD-DOM-Level-3-Events-key-20140612/
   module KeyValuesTables
     key_values = Vigilem::DOM::KeyValues
     
@@ -22,6 +23,7 @@ module Win32API::DOM
       :VK_RMENU    => 'Meta',
       :VK_NUMLOCK  => 'NumLock',
       :VK_LWIN     => 'OS', #The operating system key (e.g. the "Windows Logo" key).
+      :VK_RWIN     => 'OS',
       :VK_SCROLL   => 'ScrollLock',
       :VK_SHIFT    => 'Shift',
       :VK_LSHIFT   => 'Shift',

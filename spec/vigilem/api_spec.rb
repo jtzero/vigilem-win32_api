@@ -46,14 +46,11 @@ describe Vigilem::Win32API do
     
     context 'user input' do
       
-      before :each do
-        flush
-        write_console_input_test
-      end
-      
       describe '::PeekConsoleInputW' do
         
-        before :all do 
+        before :all do
+          flush
+          write_console_input_test
           @args = {
             :hConsoleInput => std_handle,
             :lpBuffer => described_class::PINPUT_RECORD.new(len = 1),
@@ -71,10 +68,6 @@ describe Vigilem::Win32API do
         end
         
         it 'updates the [:lpBuffer].INPUT_RECORD.EventType passed in arguments' do
-          #puts ">#{@args[:lpBuffer].first}"
-          #  expected [] to respond to `a??`
-          #expect(args[:lpBuffer]).to be_a?(described_class::PINPUT_RECORD)
-          
           expect(0.upto(4).map {|n| 2**n }).to include(@args[:lpBuffer].first.EventType)
         end
         
@@ -85,35 +78,161 @@ describe Vigilem::Win32API do
       end
       
       describe '::ReadConsoleInputW' do
-        
-        before :all do
-          @rargs = {
-            :hConsoleInput => std_handle,
-            :lpBuffer => described_class::PINPUT_RECORD.new(len = 2),
-            :nLength => len,
-            :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 1)
-          }
-          write_console_input_test
-          described_class.ReadConsoleInputW(*@rargs.values)
+        context 'params lpBuffer.size and != (nLength == lpNumberOfEventsRead), 2 events written' do
+          let(:args) do
+            {
+              :hConsoleInput => std_handle,
+              :lpBuffer => described_class::PINPUT_RECORD.new(4),
+              :nLength => 3,
+              :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 3)
+            }
+          end
+          
+          before :each do
+            flush
+            write_console_input_test(2)
+            described_class.ReadConsoleInputW(*args.values)
+          end
+          
+          it ':lpBuffer will match the number of events' do
+            expect(args[:lpBuffer].size).to eql(2)
+          end
+          
+          it ':nLength will be the same after' do
+            expect(args[:nLength]).to eql(3)
+          end
+          
+          it ':lpNumberOfEventsRead will be the same as :lpBuffer.size' do
+            expect(args[:lpNumberOfEventsRead].read_short).to eql(args[:lpBuffer].size)
+          end
         end
         
-        it 'pulls input_records from queue' do 
-          expect(@rargs[:lpNumberOfEventsRead].read_short).to be > 1
+        context 'params (lpBuffer.size == nLength) and != lpNumberOfEventsRead, 2 events written' do
+          let(:args) do
+            {
+              :hConsoleInput => std_handle,
+              :lpBuffer => described_class::PINPUT_RECORD.new(4),
+              :nLength => 4,
+              :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 3)
+            }
+          end
+          
+          before :each do
+            flush
+            write_console_input_test(2)
+            described_class.ReadConsoleInputW(*args.values)
+          end
+          
+          it ':lpBuffer will match the number of events' do
+            expect(args[:lpBuffer].size).to eql(2)
+          end
+          
+          it ':nLength will be the same after' do
+            expect(args[:nLength]).to eql(4)
+          end
+          
+          it ':lpNumberOfEventsRead will be the same as :lpBuffer.size' do
+            expect(args[:lpNumberOfEventsRead].read_short).to eql(args[:lpBuffer].size)
+          end
         end
         
-        it 'updates the [:lpBuffer].INPUT_RECORD.EventType passed in arguments' do 
-          expect(@rargs[:lpBuffer].first.EventType).to eql(1)
+        context 'params nLength and != (lpBuffer.size == lpNumberOfEventsRead), 2 events written' do
+          let(:args) do
+            {
+              :hConsoleInput => std_handle,
+              :lpBuffer => described_class::PINPUT_RECORD.new(4),
+              :nLength => 3,
+              :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 3)
+            }
+          end
+          
+          before :each do
+            flush
+            write_console_input_test(2)
+            described_class.ReadConsoleInputW(*args.values)
+          end
+          
+          it ':lpBuffer will match the number of events' do
+            expect(args[:lpBuffer].size).to eql(2)
+          end
+          
+          it ':nLength will be the same after' do
+            expect(args[:nLength]).to eql(3)
+          end
+          
+          it ':lpNumberOfEventsRead will be the same as :lpBuffer.size' do
+            expect(args[:lpNumberOfEventsRead].read_short).to eql(args[:lpBuffer].size)
+          end
         end
         
-        it 'updates the [:lpBuffer].INPUT_RECORD.Event.KeyEvent passed in arguments' do 
-          expect(@rargs[:lpBuffer].first.Event.KeyEvent.uChar).to_not be_nil
+        context 'params (nLength != lpBuffer.size) and < 2 events written' do
+          let(:args) do
+            {
+              :hConsoleInput => std_handle,
+              :lpBuffer => described_class::PINPUT_RECORD.new(1),
+              :nLength => 1,
+              :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 3)
+            }
+          end
+          
+          before :each do
+            flush
+            write_console_input_test(2)
+            described_class.ReadConsoleInputW(*args.values)
+          end
+          
+          it ':lpBuffer will match the number of events' do
+            expect(args[:lpBuffer].size).to eql(1)
+          end
+          
+          it ':nLength will be the same after' do
+            expect(args[:nLength]).to eql(1)
+          end
+          
+          it ':lpNumberOfEventsRead will be the same as :lpBuffer.size' do
+            expect(args[:lpNumberOfEventsRead].read_short).to eql(args[:lpBuffer].size)
+          end
+        end
+        
+        context 'params lpBuffer.size == nLength' do
+          before :all do
+            flush
+            write_console_input_test(2)
+            @rargs = {
+              :hConsoleInput => std_handle,
+              :lpBuffer => described_class::PINPUT_RECORD.new(len = 4),
+              :nLength => len,
+              :lpNumberOfEventsRead => FFI::MemoryPointer.new(:dword, 2)
+            }
+            described_class.ReadConsoleInputW(*@rargs.values)
+          end
+          
+          it 'pulls input_records from queue' do 
+            expect(@rargs[:lpNumberOfEventsRead].read_short).to be > 1
+          end
+          
+          it 'updates the [:lpBuffer].INPUT_RECORD.EventType passed in arguments' do 
+            expect(@rargs[:lpBuffer].first.EventType).to eql(1)
+          end
+          
+          it 'updates the [:lpBuffer].INPUT_RECORD.Event.KeyEvent passed in arguments' do 
+            expect(@rargs[:lpBuffer].first.Event.KeyEvent.uChar).to_not be_nil
+          end
+          
+          # this can produce a false positive if the tester presses some buttons,
+          # this test is one that needs to be isolatesd
+          it %q<compacts the list so there aren't several empty INPUT_RECORDs> do
+            expect(@rargs[:lpBuffer].all?(&:event_record)).to be_truthy
+          end
         end
         
       end
       
       describe '::PeekConsoleInputW' do
         
-        before :all do 
+        before :all do
+          flush
+          write_console_input_test
           @pargs = {
             :hConsoleInput => std_handle,
             :lpBuffer => described_class::PINPUT_RECORD.new(len = 1),

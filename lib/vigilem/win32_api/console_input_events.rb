@@ -1,3 +1,6 @@
+require 'vigilem/win32_api/types'
+require 'vigilem/win32_api/constants'
+
 module Vigilem
 module Win32API
   # 

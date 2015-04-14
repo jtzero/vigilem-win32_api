@@ -40,12 +40,11 @@ module Vigilem::Win32API
       _options(opts)
       
       lp_buffer = []
-      
-      if (default = (blocking = opts[:blocking]).nil?) or blocking
+      if (block_for_first = (blocking = opts[:blocking]).nil?) or blocking
         begin
           win32_api_rubyized_src.ReadConsoleInput(opts[:hConsoleInput], opts[:lpBuffer], opts[:nLength], opts[:lpNumberOfEventsRead])
           lp_buffer += opts[:lpBuffer]
-        end while (not default) and lp_buffer.size < opts[:nLength]
+        end while (not block_for_first) and lp_buffer.size < opts[:nLength]
         opts[:lpBuffer].replace(lp_buffer)
       elsif not peek_console_input.empty?
         win32_api_rubyized_src.ReadConsoleInput(opts[:hConsoleInput], opts[:lpBuffer], opts[:nLength], opts[:lpNumberOfEventsRead])

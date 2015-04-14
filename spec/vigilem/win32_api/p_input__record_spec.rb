@@ -40,4 +40,44 @@ describe Vigilem::Win32API::PINPUT_RECORD do
       expect { subject.concat [api::INPUT_RECORD.new, api::INPUT_RECORD.new ] }.to raise_error
     end
   end
+  
+  describe '::ary_of_type' do
+    
+    let(:a_key_input_record) do
+      api::INPUT_RECORD[api::KEY_EVENT, {:KeyEvent => [1, 1, 0x41, 30, {:UnicodeChar => 65 }, 0x0020]}]
+    end
+    
+    let(:ctrl_key_input_record) do
+      api::INPUT_RECORD[api::KEY_EVENT, {:KeyEvent => [1, 1, 0x11, 29, {:UnicodeChar => 0 }, 0x0028]}]
+    end
+    
+    let(:ir_a_bytes) { a_key_input_record.to_ptr.get_bytes(0, a_key_input_record.size) }
+    
+    let(:ir_ctrl_bytes) { ctrl_key_input_record.to_ptr.get_bytes(0, ctrl_key_input_record.size) }
+    
+    let(:ir_a_pointer) do 
+      ptr = FFI::MemoryPointer.new(api::INPUT_RECORD, 4)
+      ptr.put_bytes(0, ir_a_bytes)
+      ptr
+    end
+    
+    let(:ir_a_ctrl_pointer) do 
+      ptr = FFI::MemoryPointer.new(api::INPUT_RECORD, 4)
+      ptr.put_bytes(0, ir_a_bytes + ir_ctrl_bytes)
+      ptr
+    end
+    
+    it %q<will return an array of Input_Record's> do
+      expect(described_class.ary_of_type(ir_a_pointer)).to match [instance_of(api::INPUT_RECORD)]
+    end
+    
+    it %q<will return a compact array of Input_Record's> do
+      expect(described_class.ary_of_type(ir_a_ctrl_pointer).size).to eql(2)
+    end
+    
+    it %q<will return a fully fledged Input_Record> do
+      expect(described_class.ary_of_type(ir_a_ctrl_pointer).map(&:to_h)).to eql([a_key_input_record.to_h, ctrl_key_input_record.to_h])
+    end
+  end
+  
 end

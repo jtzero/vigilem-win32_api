@@ -1,8 +1,7 @@
-module Vigilem
+require 'vigilem/win32_api/console_input_events'
 
-# 
+module Vigilem
 module Win32API
-  
   
   # 
   class INPUT_RECORD < ::VFFIStruct
@@ -18,7 +17,10 @@ module Win32API
     # 
     # @return [Hash]
     def to_h
-      FFIUtils.struct_to_h(self)
+      hsh = FFIUtils.struct_to_h(self)
+      sym = self.class.event_record_sym(type)
+      hsh[:Event].reject! {|key, value| key != sym }
+      hsh
     end
     
     # 
@@ -33,12 +35,21 @@ module Win32API
       self.class.event_record(self)
     end
     
-    # 
-    # @param  input_record [EventUnion?]
-    # @return [INPUT_RECORD::Union::*_EVENT_RECORD]
-    def self.event_record(input_record)
-      sym = ConsoleInputEvents.vk_hash[input_record.EventType].to_s.downcase.titlecase.gsub(/\s+/, '').to_sym
-      input_record.Event[sym] unless sym.nil? or sym.empty?
+    class << self
+      # 
+      # @param  input_record [EventUnion?]
+      # @return [INPUT_RECORD::Union::*_EVENT_RECORD]
+      def event_record(input_record)
+        sym = event_record_sym(input_record.EventType)
+        input_record.Event[sym] unless sym.nil? or sym.empty?
+      end
+      
+      # 
+      # @param  [Integer] event_type
+      # @return [Symbol]
+      def event_record_sym(event_type)
+        ConsoleInputEvents.vk_hash[event_type].to_s.downcase.titlecase.gsub(/\s+/, '').to_sym
+      end
     end
     
     # 

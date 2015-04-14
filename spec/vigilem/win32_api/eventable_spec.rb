@@ -50,7 +50,9 @@ describe Vigilem::Win32API::Eventable do
     
     it 'reads the default amount of messages from the input buffer' do
       allow(adapt).to receive(:read_console_input).with(:nLength => 1, :blocking => true) { %w(a) }
-      expect(adapt.read_many).to eql(%w(a))
+      Timeout::timeout(4) {
+        expect(adapt.read_many).to eql(%w(a))
+      }
     end
     
     it 'blocks until the number passed in is reached' do
@@ -65,7 +67,9 @@ describe Vigilem::Win32API::Eventable do
     
     it 'reads many messages from the input_buffer' do
       allow(adapt).to receive(:read_console_input).with(:nLength => 3, :blocking => true) { %w(a b c) }
-      expect(adapt.read_many(3)).to eql(%w(a b c))
+      Timeout::timeout(4) {
+        expect(adapt.read_many(3)).to eql(%w(a b c))
+      }
     end
   end
   

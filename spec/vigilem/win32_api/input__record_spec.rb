@@ -61,14 +61,12 @@ describe Vigilem::Win32API do
       
       it 'converts the struct attributes into a Hash' do
         expect(hsh[:EventType]).to eq(1)
-        expect(hsh[:Event]).to eql({:FocusEvent=>{:bSetFocus=>1}, 
-                                  :KeyEvent=>{:bKeyDown=>1, :wRepeatCount=>1, :wVirtualKeyCode=>70, :wVirtualScanCode=>33, 
-                                          :uChar=>{:UnicodeChar=>97, :AsciiChar=>97}, :dwControlKeyState=>32}, 
-                                  :MenuEvent=>{:dwCommandId=>1}, 
-                                  :MouseEvent=>{:dwMousePosition=>{:x=>1, :y=>0}, 
-                                  :dwButtonState=>4587521, :dwControlKeyState=>6357025, :dwEventFlags=>32}, 
-                                  :WindowBufferSizeEvent=>{:dwSize=>{:x=>1, :y=>0}}
-                                })
+        expect(hsh[:Event]).to eql(:KeyEvent=>
+                                    {
+                                      :bKeyDown=>1, :wRepeatCount=>1, :wVirtualKeyCode=>70, :wVirtualScanCode=>33, 
+                                      :uChar=>{:UnicodeChar=>97, :AsciiChar=>97}, :dwControlKeyState=>32
+                                    }
+                                  )
       end
     end
     
@@ -98,16 +96,10 @@ describe Vigilem::Win32API do
         end
       end
     end
-  
+    
     context 'instance methods' do
-      
+      pending('@todo')
     end
-=begin
-    describe '::event_types' do
-      it %q(will return the id's of windows events) do
-        expect(described_class.event_types).to eq([16, 1, 8, 2, 4])
-      end
-    end
-=end
+    
   end
 end

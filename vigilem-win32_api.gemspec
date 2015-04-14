@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage      = 'http://rubygems.org/gems/vigilem-win_api'
   s.license       = 'MIT'
   
+  s.add_dependency 'vigilem-support', '~> 0.1.0'
   s.add_dependency 'vigilem-core', '~> 0.1.0'
   s.add_dependency 'vigilem-dom'
   

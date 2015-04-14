@@ -28,12 +28,21 @@ module InputHelper
     Fid.FlushConsoleInputBuffer(std_handle) 
   end
   
-  def write_console_input_test
-    nLength ||= 20
+  def write_console_input_test(num_to_write=1)
+    nLength ||= 1
     lpNumberOfEventsWritten ||= ' ' * 4
-    Fid.WriteConsoleInput(std_handle, [0x0001, 1, 0, 0x61, 1, 0x41, 97].pack('SxxlSSSSL'), 
+    1.upto(num_to_write) do |num|
+      if num.odd?
+        Fid.WriteConsoleInput(std_handle, [0x0001, 1, 0, 0x61, 1, 0x41, 97].pack('SxxlSSSSL'), 
                                                                            nLength, lpNumberOfEventsWritten)
+      else
+        Fid.WriteConsoleInput(std_handle, [0x0001, 0, 0, 0x61, 1, 0x41, 97].pack('SxxlSSSSL'), 
+                                                                           nLength, lpNumberOfEventsWritten)
+      end
+    end
+    
   end
+  
 end
 
 RSpec.configure do |c|

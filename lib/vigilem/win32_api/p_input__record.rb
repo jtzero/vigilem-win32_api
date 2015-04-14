@@ -1,5 +1,7 @@
 require 'vigilem/ffi'
 
+require 'vigilem/win32_api/input__record'
+
 module Vigilem
 module Win32API
   
@@ -44,6 +46,20 @@ module Win32API
       # @return [FFI::Pointer]
       def to_native(value, ctx)
         value.ptr
+      end
+      
+      # 
+      # @return [Array<#ary_type>]
+      def ary_of_type(pointer)
+        _compact(super(pointer))
+      end
+      
+     private
+      # 
+      # removes records that are #clear?
+      # @return [self]
+      def _compact(ary)
+        ary.reject {|ir| ir.clear? }
       end
     end
     
