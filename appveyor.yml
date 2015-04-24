@@ -8,11 +8,14 @@ install:
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - ruby --version
   - gem --version
+  - gem install bundler
+  - bundler install
   - gem list --details
   - gem env
 
 build: off
-
+test_script:
+  - bundler exec rspec spec
 environment:
   matrix:
     - ruby_version: "193"
