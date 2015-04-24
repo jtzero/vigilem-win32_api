@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'coveralls', require: false
+
 gem 'wdm', '>= 0.1.0'  if Gem.win_platform? # for gaurd
 
 def get_local_if_exists(gem_name, path, git)
