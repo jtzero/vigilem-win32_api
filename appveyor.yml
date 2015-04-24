@@ -20,5 +20,6 @@ environment:
   matrix:
     - ruby_version: "200"
     - ruby_version: "200-x64"
-    - ruby_version: "21"
+    # Gherkin has issues with 21 "cannot load such file -- 2.1/gherkin_lexer_en"
+    #- ruby_version: "21"
     - ruby_version: "21-x64"
