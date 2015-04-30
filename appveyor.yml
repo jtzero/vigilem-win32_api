@@ -18,7 +18,7 @@ test_script:
   - bundler exec rspec spec
 environment:
   COVERALLS_REPO_TOKEN: 
-    secure: OKIpGfIuWNpftKai0ufnPgYYWqmSlSgOz
+    secure: hfBDPUnfZ6nmf0Vrji7H30zsPBzQNGF4foiJQPWNK0Y2eiViKz/H8lOuXHPwMejH
   matrix:
     - ruby_version: "200"
     - ruby_version: "200-x64"
