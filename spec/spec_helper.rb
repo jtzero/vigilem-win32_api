@@ -15,6 +15,11 @@ require 'attributes_and_size_test'
 require 'input_helper'
 
 
+require 'coveralls'
+require 'api'
+Coveralls.wear!
+
+
 #to discover when tests hang, which will happen because I have not correctly isolated the tests
 # use `rspec -f d`
 

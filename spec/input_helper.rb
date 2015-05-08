@@ -1,8 +1,5 @@
 require 'fiddle/import'
 
-require 'coveralls'
-Coveralls.wear!
-
 module InputHelper
   include Vigilem::Win32API
   
