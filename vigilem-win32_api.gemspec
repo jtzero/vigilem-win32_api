@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.description   = 'Windows API Bindings and DOM converter for Vigilem'
   s.authors       = ['jtzero']
   s.email         = 'jtzero511@gmail'
-  s.homepage      = 'http://rubygems.org/gems/vigilem-win_api'
+  s.homepage      = 'https://rubygems.org/gems/vigilem-win32_api'
   s.license       = 'MIT'
   
   s.add_dependency 'vigilem-support', '~> 0.1.0'
