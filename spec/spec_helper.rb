@@ -16,7 +16,7 @@ require 'input_helper'
 
 
 require 'coveralls'
-#require 'api'
+require 'api'
 Coveralls.wear!
 
 
