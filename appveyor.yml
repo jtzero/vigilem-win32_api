@@ -18,7 +18,7 @@ environment:
     secure: hfBDPUnfZ6nmf0Vrji7H30zsPBzQNGF4foiJQPWNK0Y2eiViKz/H8lOuXHPwMejH
   matrix:
     - ruby_version: "200"
-    - ruby_version: "200-x64"
+    #- ruby_version: "200-x64"
     # Gherkin has issues with 21 "cannot load such file -- 2.1/gherkin_lexer_en"
     #- ruby_version: "21"
-    - ruby_version: "21-x64"
+    #- ruby_version: "21-x64"
