@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/tspprsor8fsd6k9c/branch/master?svg=true)](https://ci.appveyor.com/project/jtzero/vigilem-win32-api/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/tspprsor8fsd6k9c/branch/appveyor_test?svg=true)](https://ci.appveyor.com/project/jtzero/vigilem-win32-api/branch/appveyor_test)
 
 # Vigilem::Win32API
   Provides DOM conversion and ruby binding for the Win32API
