@@ -1,10 +1,9 @@
 ---
 version: "{build}"
 clone_depth: 10
-init:
-  - (new-object System.Net.WebClient).DownloadFile('http://curl.haxx.se/ca/cacert.pem','C:\cacert.pem')
 install:
-  - SET SSL_CERT_FILE=C:\cacert.pem
+  - appveyor DownloadFile http://curl.haxx.se/ca/cacert.pem
+  - SET SSL_CERT_FILE=%APPVEYOR_BUILD_FOLDER%\cacert.pem
   - SET platform=Win32
   - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
   - ruby --version
